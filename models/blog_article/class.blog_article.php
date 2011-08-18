@@ -3,22 +3,27 @@
 class blog_article extends model {
 
 	public $_required_fields = array(
-		'door_time' => 'Door Time',
-		'age' => 'Age',
-		'timezone' => 'Timezone',
-		'ct_campaign_id' => 'Campaign'
+		
 	);
 
 	public $_ignore = array(
 		'tables' => array(
-			'ct_campaign',
-			'market',
-			'ct_holiday'
 		)
 	);
 	
-	public function getList($a) {
+	public function getList($a) {		
+
+		//. market_id
+		//. where
+		//. status
+		//. blog_category_id
+		//. limit
+		//. order_by
+		//. offset
+		//. search
+		//. group_by
 		
+
 		// where
 		if ($a['where']) {
 			if (is_array($a['where'])) {
@@ -29,19 +34,31 @@ class blog_article extends model {
 		} else {
 			$where = array();
 		}
-		$where[]= "blog_article.status = 'A'";
+		$where[] = 'blog_article.id IS NOT NULL';
 
 		// market_id
-		if ($a['market_id']) $where[] = "(blog_article.market_id = {$a['market_id']} OR blog_article.market_id = )";
+		if ($a['market_id']) $where[] = "blog_article.market_id = {$a['market_id']}";
+
+		// status
+		if ($a['status']) {
+			$where[] = "blog_article.status = '{$a['status']}'";
+		} else {
+			$where[] = "blog_article.status = 'A'";
+		}
+	
+		//ct_category_instance_id
+        if ($a['blog_category_id']) {
+        	$where[] = 'blog_category.id = '.$a['blog_category'];
+        }
 
         // venue_id
-        if ($a['venue_id']) $where[] = "(venue.id = {$a['venue_id']} or bar.id = {$a['venue_id']})";
+        if ($a['venue_id']) $where[] = "venue.id = {$a['venue_id']}";
 
         // search
         if ($a['search']) {
         	$search = trim(addslashes($a['search']));
         	$search = " ilike '%{$search}%' ";
-        	$where[] = "(blog_article.name {$search} or venue.name {$search} or bar.name {$search} or ct_contract.name {$search})";
+        	$where[] = "(blog_article.title {$search} or blog_article.content {$search})";
         }
 
         // limit 
@@ -52,16 +69,40 @@ class blog_article extends model {
 
         //order_by
         $order_by = 'ORDER BY ';
+        if ($a['order_by']) $order_by .= $a['order_by'] . ', ';
+        $order_by .= 'blog_article.post_time desc';
+
+        //group_by
+        if ($a['group_by']) {
+        	$group_by = 'GROUP BY '.$a['group_by'];
+        }
 
         $where = ($where) ? implode(' and ', $where) : 'true';
 
-		$clause_array = array(	'limit' => $a['limit'],
-								'where' => $where
-								);
-		$blog_articles = model::getByClause($clause_array, 'blog_article');
-       
-		return $blog_articles;
-	
+        $sql = "SELECT blog_article_id FROM (
+	        		SELECT DISTINCT on (q.blog_article_id) blog_article_id, row FROM (
+	        			SELECT
+	        				blog_article.id as blog_article_id,
+	        				row_number() OVER ({$order_by} ) as row
+	        			FROM blog_article
+	        			LEFT JOIN blog_article_tag on blog_article_tag.blog_article_id = blog_article.id and ct_event.active = 1
+	        			LEFT JOIN blog on blog.id = blog_article.blog_id and blog.active = 1
+	        			LEFT JOIN blog_category on blog_category.id = blog_article.blog_category_id and blog_category.active = 1
+	        			
+	        			WHERE blog_article.active = 1 AND {$where}
+	        			{$group_by}
+	        			{$order_by}
+	        			{$offset}
+	        			{$limit}
+	        		) as q
+	        	) as fin ORDER BY row";
+        $r = sql($sql);
+		$ids = array();
+		while (!$r->EOF) {
+			$ids[] = $r->Fields('blog_article_id');
+			$r->moveNext();
+		}
+		return $ids;
 	}
 	
 }

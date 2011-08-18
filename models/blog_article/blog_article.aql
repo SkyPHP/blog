@@ -15,14 +15,10 @@ blog_article {
 	mod_time,
 	tweet_sent,
 	venue_id,
-	id as mini,
-	id as article,
 	notification_sent,
 	notification_to,
 	notification_name,
 	note,
-	id as market,
-	id as author,
 	pageviews,
 	
 	blog_article_tag {
@@ -48,8 +44,10 @@ blog {
 	category
 }
 person on person.id = blog_article.author__person_id {
-	fname, lname, username, bylines,
-	id as fname_lname
+	fname, 
+	lname,
+	username,
+	bylines,
 }
 blog_category{
 	name as blog_category_name,
