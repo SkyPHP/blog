@@ -1,0 +1,57 @@
+blog_article {
+	blog_id,
+	title,
+	introduction,
+	content,
+	author__person_id,
+	approved__person_id,
+	post_time,
+	blog_category_id,
+	status,
+	comment_count,
+	market_id,
+	featured,
+	media_item_id,
+	mod_time,
+	tweet_sent,
+	venue_id,
+	id as mini,
+	id as article,
+	notification_sent,
+	notification_to,
+	notification_name,
+	note,
+	id as market,
+	id as author,
+	pageviews,
+	
+	blog_article_tag {
+		name as tag_name,
+		iorder
+		order by iorder,name
+	}
+}
+market {
+	name as market_name, slug as market_slug
+}
+blog {
+	has_markets,
+	name as blog_name,
+	slug as blog_slug,
+	logo__media_item_id,
+	inverse__media_item_id,
+	notification_template,
+	notification_subject,
+	notification_from,
+	full_width,
+	partial_width,
+	category
+}
+person on person.id = blog_article.author__person_id {
+	fname, lname, username, bylines,
+	id as fname_lname
+}
+blog_category{
+	name as blog_category_name,
+	slug as blog_category_slug
+}
