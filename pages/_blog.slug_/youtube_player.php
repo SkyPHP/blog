@@ -3,7 +3,7 @@ $aql = "blog_article_video{
 			youtube_url,
 			type,
 			title
-			where blog_article_id = {$r['blog_article_id']}
+			where blog_article_id = {$ba['blog_article_id']}
 			order by type desc
 		}";
 $rs = aql::select($aql);

@@ -7,16 +7,8 @@ $p->template('website', 'top');
 
 
 
-
-
-$where = array(
-    "blog_article.blog_id = 1"
-);
-//blog::listing( $where, 10, 0, NULL, NULL);
-
 $clause = array(
-			'limit' => 10,
-			'market_id' => 1
+			'blog_id' => 1
 			);
 $blog_articles = blog_article::getList($clause);
 
@@ -32,7 +24,7 @@ foreach($blog_articles as $blog_article_id) {
     <div style="height:14px;"><?=$ba['post_time']?></div>
 
     <?
-	include("pages/_blog.slug_/article.php");
+	include("pages/_blog.slug_/mini.php");
 }
 
 

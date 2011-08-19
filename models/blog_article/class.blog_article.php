@@ -35,9 +35,10 @@ class blog_article extends model {
 			$where = array();
 		}
 		$where[] = 'blog_article.id IS NOT NULL';
+		$where[] = 'blog_article.post_time < now()';
 
 		// market_id
-		if ($a['market_id']) $where[] = "blog_article.market_id = {$a['market_id']}";
+		if ($a['market_id']) $where[] = "(blog_article.market_id = {$a['market_id']} OR blog_article.market_id = 0)";
 
 		// status
 		if ($a['status']) {
@@ -62,7 +63,10 @@ class blog_article extends model {
         }
 
         // limit 
-        if ($a['limit']) $limit = 'LIMIT '.$a['limit'];
+        if ($a['limit']) 
+			$limit = 'LIMIT '.$a['limit'];
+		else
+			$limit = 'LIMIT 10';
 
         // offset
         if ($a['offset']) $offset = 'OFFSET '.$a['offset'];
@@ -84,8 +88,8 @@ class blog_article extends model {
 	        			SELECT
 	        				blog_article.id as blog_article_id,
 	        				row_number() OVER ({$order_by} ) as row
-	        			FROM blog_article
-	        			LEFT JOIN blog_article_tag on blog_article_tag.blog_article_id = blog_article.id and ct_event.active = 1
+	        			FROM blog_article_tag
+	        			LEFT JOIN blog_article on blog_article.id = blog_article_tag.blog_article_id and blog_article.active = 1
 	        			LEFT JOIN blog on blog.id = blog_article.blog_id and blog.active = 1
 	        			LEFT JOIN blog_category on blog_category.id = blog_article.blog_category_id and blog_category.active = 1
 	        			
@@ -96,6 +100,7 @@ class blog_article extends model {
 	        			{$limit}
 	        		) as q
 	        	) as fin ORDER BY row";
+				echo $sql;
         $r = sql($sql);
 		$ids = array();
 		while (!$r->EOF) {
