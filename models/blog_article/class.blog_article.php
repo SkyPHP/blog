@@ -23,7 +23,6 @@ class blog_article extends model {
 		//. search
 		//. group_by
 		
-
 		// where
 		if ($a['where']) {
 			if (is_array($a['where'])) {
@@ -81,6 +80,12 @@ class blog_article extends model {
         	$group_by = 'GROUP BY '.$a['group_by'];
         }
 
+        $from = 'blog_article';
+        if ($a['tag']) {
+        	$from = 'blog_article_tag';
+        	$first_join = 'LEFT JOIN blog_article on blog_article.id = blog_article_tag.blog_article_id and blog_article.active = 1';
+        }
+
         $where = ($where) ? implode(' and ', $where) : 'true';
 
         $sql = "SELECT blog_article_id FROM (
@@ -88,8 +93,8 @@ class blog_article extends model {
 	        			SELECT
 	        				blog_article.id as blog_article_id,
 	        				row_number() OVER ({$order_by} ) as row
-	        			FROM blog_article_tag
-	        			LEFT JOIN blog_article on blog_article.id = blog_article_tag.blog_article_id and blog_article.active = 1
+	        			FROM {$from}
+	        			{$first_join}
 	        			LEFT JOIN blog on blog.id = blog_article.blog_id and blog.active = 1
 	        			LEFT JOIN blog_category on blog_category.id = blog_article.blog_category_id and blog_category.active = 1
 	        			
