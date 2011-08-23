@@ -1,4 +1,6 @@
 <?
+	include('content.php');
+
 	$blog_editor = auth('blog_author:editor');
 	$admin = auth('admin:*');
 	$r['slideshow_vfolder'] = '/blog/blog_article/'.$r['blog_article_id'].'/slideshow';
@@ -33,7 +35,7 @@
 </div>
 
 <?
-include('youtube_player.php');
+include( 'video/video-player.php' );
 if($r['slideshow_vfolder']) {
 	?>
 	<style>
@@ -73,54 +75,12 @@ if($r['slideshow_vfolder']) {
     $googlemaps_divid = "rightbar_googlemaps";
     $googlemaps = "";
     if ($r['venue_id']) {
-        $aql = "
-           venue{
-              name as venue_name, address1, city, state, zip, name_modifier as venue_name_mod
-           }
-           venue_type{
-              slug as venue_type_slug
-              where venue.id={$r['venue_id']}
-              limit 1
-           }
-           market{
-              venue_search_nickname
-           }
-        ";
-
-        $vrs = aql::select($aql);
-
-        if(is_array($vrs)){$vrs=$vrs[0];}
-
-        $venue_type_slug = $vrs['venue_type_slug']?$vrs['venue_type_slug']:'clubs';
-        $venue_search_nickname = $vrs['venue_search_nickname']?$vrs['venue_type_slug']:'NYC';
-
-        $address_hyperlink = "<a href='/$market_slug/$venue_type_slug/".slugize($vrs['venue_name']).'-'.$venue_search_nickname."/{$vrs['venue_ide']}' class='blog-post-footer-venue-name' >{$vrs['venue_name']}</a>";
-
-        $address = "{$vrs['address1']} {$vrs['city']} {$vrs['state']} {$vrs['zip']}";
-        $address_for_html = "{$address_hyperlink}\n<br>".($vrs['venue_name_mod']?$vrs['venue_name_mod']."\n<br>":"")."{$vrs['address1']}\n<br>{$vrs['city']}, {$vrs['state']} {$vrs['zip']}";
-        //     $post_after.=togooglemaps(array('id'=>'main-blog-image','address'=>$address));
-        $args = array(
-         "address"=>$address,
-         "id"=>$googlemaps_divid,
-         "class"=>($extra_class?"bottom":""),
-         "mapoptions"=>array(
-            'mapTypeControl'=>'false',
-            'mapTypeId'=>'google.maps.MapTypeId.TERRAIN',
-            'navigationControl'=>'true',
-            'navigationControlOptions'=>array(
-               'style'=>'google.maps.NavigationControlStyle.SMALL'
-            ),
-            'zoom'=>13
-         )
-        );
-        $address_for_css = preg_replace('#\s+#',' ',$address);
-        $address_for_css = preg_replace('#\s#','-',$address_for_css);
-        $address_for_css = preg_replace('#,#','--',$address_for_css);
-
+		if( !$r['latitude'] )
+			echo 'HELLPPPPPPPPP';
 ?>
+        <input type="hidden" address="<?=$v['address1']?> <?=$v['city']?> <?=$v['state']?> <?=$v['zip']?>" class="venue_info" lat="<?=$v['latitude']?>" lng="<?=$v['longitude']?>" venue_name="<?=$v['venue_name']?>" is_registration_point="<?=$v['is_registration_point']?>" />
         <div class="blog-post-map">
-            <?=googlemaps($args)?>
-            <div class='blog-post-map-address'><?=$address_for_html?></div>
+            <div id='map' style="height:100px;width:100px;"></div>
         </div>
 <?
     }//if map
@@ -188,7 +148,8 @@ if ($GLOBALS['tiny_domain']) {
 <div id='under-blog-post'>
 
     <? $disqus_identifier = $r['blog_article_ide'];
-       include('components/disqus/thread/thread.php');
+		echo $disqus_identifier;
+       include('disqus.php');
     ?>
 
 </div>

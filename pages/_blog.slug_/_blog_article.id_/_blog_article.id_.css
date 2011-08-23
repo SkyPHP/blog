@@ -1,0 +1,46 @@
+/* ############ */
+/* BLOG PROFILE */
+/* ############ */
+
+.blog-post-title {
+	font-size: 30px;
+	color: black;
+	margin-bottom: 5px;
+}
+
+
+
+.blog-post-info {
+	margin-bottom: 13px;
+	font-size: 1em;
+	color: black;
+}
+
+.blog-post {
+	color: black;
+	overflow: hidden;
+	padding: 10px 10px 0px;
+	background: #F3F3F3;
+}
+	#blog-post-content, body#tinymce {
+		font-size: 13px;
+		font-family: Arial, Helvetica;
+		padding: 10px;
+		background: white;
+	}
+
+.blog-video {
+	margin-top:10px;
+}
+.blog-video h3 {
+	margin: 10px 0;
+}
+
+#blog-post-content .article_image, body#tinymce .article_image {
+	margin-right: 25px;
+	margin-bottom: 5px;
+	float: left;
+}
+#blog-post-content p {
+	margin:10px 0;
+}

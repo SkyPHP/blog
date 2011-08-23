@@ -1,0 +1,104 @@
+/* CSS Document */
+ h1 {
+ 	margin:0 20px;
+	font-size:42px;
+ }
+
+
+.blog-mini-footer {
+    overflow: hidden;
+    margin-top: 5px;
+}
+.blog-mini-post {
+    font-size: 13px;
+    border-bottom: 1px dotted #ccc;
+    padding: 20px 0 15px;
+	margin:0 20px;
+	overflow:hidden;
+}
+.blog-mini-post a {
+    text-decoration: none;
+}
+.blog-post-author {
+	font-size:11px;
+	margin-bottom:5px;
+}
+.blog-mini-post a:hover {
+    text-decoration: underline;
+}
+.blog-mini-comments {
+    float: left;
+    margin: 3px 10px 0;
+    overflow: hidden;
+}
+.blog-mini-comments a.count {
+    background-color: #000;
+    color: #fff;
+}
+.blog-mini-comments a {
+    float: left;
+    display: block;
+    padding: 1px 4px;
+    color: #000;
+    font-size: 12px;
+    font-weight: bold;
+}
+.blog-mini-share {
+    float: left;
+    margin-top: 3px;
+}
+
+.blog-post-image {
+    float: left;
+    display: block;
+    position:relative;
+    border: 1px solid #ccc;
+    padding: 4px;
+    margin: 0 15px 10px 0;
+}
+
+a.blog-category {
+    background-color: #A2242A;
+    color: #FFFFFF;
+    display: block;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    left: 10px;
+    padding: 3px 6px;
+    position: absolute;
+    top: -10px;
+	border-radius: 4px 4px 4px 4px;
+    text-decoration: none;
+}
+
+.blog-post-title {
+font-size: 30px;
+color: black;
+margin-bottom: 5px;
+}
+
+.blog-authors {
+    float: left;
+    width: 144px;
+    background-color: #000;
+    color: #fff;
+    padding: 8px;
+}
+
+a.blog-read-more {
+	display: block;
+	font-weight: bold;
+	float: right;
+	background-color: #F3F3F3;
+	padding: 3px 6px;
+}
+.pagination-links{
+	float:left;
+}
+.pagination-link {
+	font-size:12px;
+}
+
+
+

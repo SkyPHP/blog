@@ -1,5 +1,4 @@
 blog_article {
-	blog_id,
 	title,
 	introduction,
 	content,
@@ -15,6 +14,7 @@ blog_article {
 	mod_time,
 	tweet_sent,
 	venue_id,
+	[venue],
 	notification_sent,
 	notification_to,
 	notification_name,

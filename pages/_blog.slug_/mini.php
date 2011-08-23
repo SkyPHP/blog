@@ -10,18 +10,16 @@ if($_GET['debug']){
 }
 
 $blog_article_id = $r['blog_article_id'];
-$blog_article_ide = encrypt($blog_article_id,'blog_article');
 
 if(!$r['blog_article_ide']){$r['blog_article_ide']=$blog_article_ide;}
 if(!$r['market_slug']){$r['market_slug']=$market_slug;}
 if(!$r['market_slug']){$r['market_slug']=$_SESSION['market_slug'];} // fix for an error where $market_slug is not initialized
 
-if ($GLOBALS['blog_has_markets']) {
-    $article_uri = '/'.$r['market_slug'].'/' . $r['blog_slug'] . '/'.slugize($r['title']).'/'.$blog_article_ide;
-} else {
-    $article_uri = '/' . $r['blog_slug'] . '/'.slugize($r['title']).'/'.$blog_article_ide;
-}
-
+//if ($GLOBALS['blog_has_markets']) {
+//    $article_uri = '/'.$r['market_slug'].'/' . $r['blog_slug'] . '/'.$blog_article_id."/".slugize($r['title']).'/';
+//} else {
+    $article_uri =  '/'.$r['blog_slug'] . '/'.$blog_article_id.'/'.slugize($r['title']).'/';
+//}
 $article_tinyurl = tinyurl( 'http://' . $_SERVER['HTTP_HOST'] . $article_uri );
 
 // remove html garbage, images and empty paragraphs
@@ -89,7 +87,8 @@ if ( $cutoff ) {
     //------ IMAGE ------
     $img = media::get_item($r['media_item_id'],$image_width,$image_height);
     if ($img) {
-        if ( $img['width'] < $image_width ) $img = media::get_item($r['media_item_id'],$sm_image_width,$sm_image_height);
+        if ( $img['width'] < $image_width ) 
+			$img = media::get_item($r['media_item_id'],$sm_image_width,$sm_image_height);
 ?>
         <div class="blog-post-image">
 <?

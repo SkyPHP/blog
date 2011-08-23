@@ -37,7 +37,7 @@ class blog_article extends model {
 		$where[] = 'blog_article.post_time < now()';
 
 		// market_id
-		if ($a['market_id']) $where[] = "(blog_article.market_id = {$a['market_id']} OR blog_article.market_id = 0)";
+		if ($a['market_id']) $where[] = "(blog_article.market_id = {$a['market_id']} OR blog_article.market_id = 0 OR blog_article.market_id IS NULL)";
 
 		// status
 		if ($a['status']) {
@@ -52,7 +52,7 @@ class blog_article extends model {
         }
 
         // venue_id
-        if ($a['venue_id']) $where[] = "venue.id = {$a['venue_id']}";
+        if ($a['venue_id']) $where[] = "blog_article.venue_id = {$a['venue_id']}";
 
         // search
         if ($a['search']) {
@@ -60,12 +60,20 @@ class blog_article extends model {
         	$search = " ilike '%{$search}%' ";
         	$where[] = "(blog_article.title {$search} or blog_article.content {$search})";
         }
-
-        // limit 
+		// person_id
+		if ($a['person_id']) {
+			$where[] = "blog_article.author__person_id = ".$a['person_id'];
+		}
+        // blog_id
+		if ($a['blog_id']) {
+			$where[] = "blog_article.blog_id = ".$a['blog_id'];
+		}
+		
+		// limit 
         if ($a['limit']) 
 			$limit = 'LIMIT '.$a['limit'];
-		else
-			$limit = 'LIMIT 10';
+		//else
+		//	$limit = 'LIMIT 10';
 
         // offset
         if ($a['offset']) $offset = 'OFFSET '.$a['offset'];
@@ -84,6 +92,7 @@ class blog_article extends model {
         if ($a['tag']) {
         	$from = 'blog_article_tag';
         	$first_join = 'LEFT JOIN blog_article on blog_article.id = blog_article_tag.blog_article_id and blog_article.active = 1';
+			$where[] = "blog_article_tag.name ilike '".$a['tag']."'";
         }
 
         $where = ($where) ? implode(' and ', $where) : 'true';
@@ -105,7 +114,6 @@ class blog_article extends model {
 	        			{$limit}
 	        		) as q
 	        	) as fin ORDER BY row";
-				echo $sql;
         $r = sql($sql);
 		$ids = array();
 		while (!$r->EOF) {

@@ -1,2 +1,0 @@
-<?
-$primary_table = "blog";
