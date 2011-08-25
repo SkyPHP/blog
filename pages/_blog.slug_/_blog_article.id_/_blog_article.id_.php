@@ -11,7 +11,7 @@ $p->breadcrumb = array( 'Home' => '/',
 						$r->title => NULL);
 
 $p->template('website', 'top');	
-krumo($r);
+
 include("article.php");
 
 $p->template('website', 'bottom');	

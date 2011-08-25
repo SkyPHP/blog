@@ -1,6 +1,5 @@
 <?
 	include('content.php');
-
 	$blog_editor = auth('blog_author:editor');
 	$admin = auth('admin:*');
 	$r['slideshow_vfolder'] = '/blog/blog_article/'.$r['blog_article_id'].'/slideshow';
@@ -74,13 +73,21 @@ if($r['slideshow_vfolder']) {
 <?
     $googlemaps_divid = "rightbar_googlemaps";
     $googlemaps = "";
-    if ($r['venue_id']) {
-		if( !$r['latitude'] )
-			echo 'HELLPPPPPPPPP';
+    if ($r->venue->venue_id) {
+		if( !$r->venue->latitude || !$r->venue->longitude ) {
+			$r->venue->geolocate();
+			$rslts = $r->venue->save();
+		}
+		$address = $r->venue->address1." ".$r->venue->city." ".$r->venue->state." ".$r->venue->zip;
 ?>
-        <input type="hidden" address="<?=$v['address1']?> <?=$v['city']?> <?=$v['state']?> <?=$v['zip']?>" class="venue_info" lat="<?=$v['latitude']?>" lng="<?=$v['longitude']?>" venue_name="<?=$v['venue_name']?>" is_registration_point="<?=$v['is_registration_point']?>" />
+        <input type="hidden" address="<?=$address?>" class="venue_info" lat="<?=$r->venue->latitude?>" lng="<?=$r->venue->longitude?>" venue_name="<?=$r->venue->venue_name?>" is_registration_point="" />
         <div class="blog-post-map">
-            <div id='map' style="height:100px;width:100px;"></div>
+            <div id='map'></div>
+            <div class="info">
+                <div><?=$r->venue->venue_name?></div>
+                <div><?=$r->venue->address1?></div>
+                <div><?=$r->venue->city?>, <?=$r->venue->state?>&nbsp;&nbsp;<?=$r->venue->zip?></div>
+        	</div>
         </div>
 <?
     }//if map
@@ -118,7 +125,7 @@ if ($GLOBALS['tiny_domain']) {
                 if ($first) echo 'Tags: ';
                 else echo ', ';
                 $first = false;
-                ?><a href="/tag/<?=strtolower(str_replace(' ','+',$tag['name']))?>"><?=strtoupper($tag['name'])?></a><?
+                ?><a href="/blog-tag/<?=strtolower(str_replace(' ','+',$tag['name']))?>"><?=strtoupper($tag['name'])?></a><?
             }//foreach tags
     ?>
         </div>
@@ -148,8 +155,8 @@ if ($GLOBALS['tiny_domain']) {
 <div id='under-blog-post'>
 
     <? $disqus_identifier = $r['blog_article_ide'];
-		echo $disqus_identifier;
-       include('disqus.php');
+	//	echo $disqus_identifier;
+      // include('disqus.php');
     ?>
 
 </div>

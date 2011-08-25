@@ -19,7 +19,7 @@
 .blog-post {
 	color: black;
 	overflow: hidden;
-	padding: 10px 10px 0px;
+	padding: 10px 0px 0px;
 	background: #F3F3F3;
 }
 	#blog-post-content, body#tinymce {
@@ -44,3 +44,29 @@
 #blog-post-content p {
 	margin:10px 0;
 }
+
+.blog-post-footer {
+	overflow: hidden;
+	border-top: solid 1px #CCC;
+	margin-top: 15px;
+	padding-top: 15px;
+	padding-bottom:15px;
+}
+	.blog-post-tags {
+		margin-bottom:10px;
+	}
+	.blog-post-map {
+		float: left;
+		margin-right: 20px;
+		margin-bottom: 10px;
+	}
+		.blog-post-map #map{
+			height:225px;
+			width:300px;
+		}
+		.blog-post-map .info {
+			padding:10px 0;
+		}
+	.blog-post-footer-items {
+		
+	}

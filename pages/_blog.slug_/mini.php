@@ -85,27 +85,31 @@ if ( $cutoff ) {
 
 <?
     //------ IMAGE ------
-    $img = media::get_item($r['media_item_id'],$image_width,$image_height);
+    $img = vf::getItem($r['media_item_id'],array('width'=>$image_width,'height'=>$image_height));
     if ($img) {
-        if ( $img['width'] < $image_width ) 
-			$img = media::get_item($r['media_item_id'],$sm_image_width,$sm_image_height);
+        if ( $img->width < $image_width ) 
+			$img = vf::getItem($r['media_item_id'],array('width'=>$sm_image_width,'height'=>$sm_image_height));
+	
 ?>
+
         <div class="blog-post-image">
 <?
-        if (strtolower($r['blog_article_tag'][0]['tag_name'])) {
+        if($r['blog_article_tag'][0]['tag_name'] || $r['name'])	{
+			if (strtolower($r['blog_article_tag'][0]['tag_name'])) {
 ?>
-            <a href="<?=$article_uri ?>" class="blog-category">
-                <?=strtoupper($r['blog_article_tag'][0]['tag_name'])?>
-            </a>
+                <a href="<?=$article_uri ?>" class="blog-category">
+                    <?=strtoupper($r['blog_article_tag'][0]['tag_name'])?>
+                </a>
 <?
-        }else{
-?>         <a href='<?=$article_uri ?>' class="blog-category">
-              <?=strtoupper($r['name'])?>
-           </a>  
+			}else{
+	?>         <a href='<?=$article_uri ?>' class="blog-category">
+				  <?=strtoupper($r['name'])?>
+			   </a>  
 <?
+			}
         }//if
 ?>
-            <a href="<?=$article_uri?>"><?=$img['html']?></a>
+            <a href="<?=$article_uri?>"><?=$img->html?></a>
         </div>
 <?
     } else if (strtolower($r['blog_article_tag'][0]['tag_name'])) {

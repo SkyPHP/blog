@@ -1,4 +1,21 @@
+var locs = new Array(),
+	markers = new Array(),
+	map,
+	infowindow;
+
 $(document).ready(function() {
+	
+	$('.venue_info').each(function() {
+		if ($(this).attr('lat') != 0 && $(this).attr('lng') != 0 ) {
+			var tmp = {
+				'venue_name' : $(this).attr('venue_name'),
+				'address' : $(this).attr('address'),
+				'latlng' : new google.maps.LatLng($(this).attr('lat'), $(this).attr('lng'))
+			};
+			locs.push(tmp);
+		}
+	});
+
 	map_initialize();
 });
 
@@ -8,7 +25,7 @@ $(document).ready(function() {
 
 function map_initialize() {
 	var mapOptions = {
-			zoom: 18,
+			zoom: 15,
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 			center: locs[0].latlng,
 			scrollwheel: false,
@@ -35,7 +52,7 @@ function map_initialize() {
 		do_marker_click(marker, locs[i]);
 	}
 
-	map.fitBounds(mapbounds);
+	//map.fitBounds(mapbounds);
 
 }
 
