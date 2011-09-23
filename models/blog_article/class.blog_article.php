@@ -93,6 +93,8 @@ class blog_article extends model {
         	$from = 'blog_article_tag';
         	$first_join = 'LEFT JOIN blog_article on blog_article.id = blog_article_tag.blog_article_id and blog_article.active = 1';
 			$where[] = "blog_article_tag.name ilike '".$a['tag']."'";
+        } else {
+        	$tag_join = 'LEFT JOIN blog_article_tag on blog_article.id = blog_article_tag.blog_artcle_id and blog_article_tag.active = 1';
         }
 
         $where = ($where) ? implode(' and ', $where) : 'true';
@@ -106,7 +108,7 @@ class blog_article extends model {
 	        			{$first_join}
 	        			LEFT JOIN blog on blog.id = blog_article.blog_id and blog.active = 1
 	        			LEFT JOIN blog_category on blog_category.id = blog_article.blog_category_id and blog_category.active = 1
-	        			
+	        			{$tag_join}
 	        			WHERE blog_article.active = 1 AND {$where}
 	        			{$group_by}
 	        			{$order_by}
