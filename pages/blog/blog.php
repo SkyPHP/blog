@@ -10,5 +10,5 @@ $clause['where'] = "( ".implode(' AND ',$blog_where)." )" ;
 $website['blog_json'] = $website;
 
 $p->css[] = '/pages/_blog.slug_/_blog.slug_.css';
-
+die();
 include('pages/_blog.slug_/_blog.slug_.php');
