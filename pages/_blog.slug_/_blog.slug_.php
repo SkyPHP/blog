@@ -2,9 +2,13 @@
 $sidebar = "ad";
 
 $p->template('website', 'top');	
-?>
-<h1><?=aql::value('blog.name',$blog_id)?></h1>
-<?
+
+if ($blog_id) { ?>
+	<h1><?=aql::value('blog.name',$blog_id)?></h1>
+<? } else { ?>
+	<h1><?=$p->seo['h1']?></h1>
+	<div id="h1_blurb"><?=$p->seo['h1_blurb']?></div>
+<? } 
 
 $clause['blog_id'] = $blog_id;
 

@@ -21,7 +21,7 @@ if(!$r['market_slug']){$r['market_slug']=$_SESSION['market_slug'];} // fix for a
     $article_uri =  '/'.$r['blog_slug'] . '/'.$blog_article_id.'/'.slugize($r['title']).'/';
 //}
 $article_tinyurl = tinyurl( 'http://' . $_SERVER['HTTP_HOST'] . $article_uri );
-
+echo 'http://' . $_SERVER['HTTP_HOST'] . $article_uri;
 // remove html garbage, images and empty paragraphs
 $content = $r['content'];
 $content = str_replace('&nbsp;',' ',$content);
