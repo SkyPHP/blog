@@ -93,6 +93,9 @@ a.blog-read-more {
 	background-color: #F3F3F3;
 	padding: 3px 6px;
 }
+.dark {
+	background-color: #00C0C0;
+}
 .pagination-links{
 	float:left;
 }
