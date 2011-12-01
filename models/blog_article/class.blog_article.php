@@ -11,7 +11,7 @@ class blog_article extends model {
 		)
 	);
 	
-	public function getList($a) {		
+	public static function getList($a) {		
 
 		//. market_id
 		//. where
