@@ -112,10 +112,11 @@ class blog_article extends model {
 	        			WHERE blog_article.active = 1 AND {$where}
 	        			{$group_by}
 	        			{$order_by}
-	        			{$offset}
-	        			{$limit}
+	        			
 	        		) as q
-	        	) as fin ORDER BY row";
+	        	) as fin ORDER BY row
+				{$offset}
+	        	{$limit}";
         $r = sql($sql);
 		$ids = array();
 		while (!$r->EOF) {
