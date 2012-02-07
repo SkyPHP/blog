@@ -1,0 +1,9 @@
+<?
+
+class blog extends model {
+
+
+
+
+
+}

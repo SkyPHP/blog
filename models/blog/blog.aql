@@ -1,0 +1,7 @@
+blog {
+	name,
+	slug,
+	description,
+	logo__media_item_id,
+	inverse__media_item_id
+}
