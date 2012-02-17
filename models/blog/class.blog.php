@@ -1,9 +1,5 @@
 <?
-
 class blog extends model {
-
-
-
 
 
 }

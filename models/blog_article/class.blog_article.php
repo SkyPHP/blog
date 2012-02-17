@@ -50,8 +50,13 @@ class blog_article extends model {
         if ($a['blog_category_id']) {
         	$where[] = 'blog_category.id = '.$a['blog_category'];
         }
-
-        // venue_id
+		
+		// mediabox
+		if ($a['mediabox']) {
+			$where[] = "blog_media.type = 'mebox'";
+		}
+        
+		// venue_id
         if ($a['venue_id']) $where[] = "blog_article.venue_id = {$a['venue_id']}";
 
         // search
@@ -66,7 +71,11 @@ class blog_article extends model {
 		}
         // blog_id
 		if ($a['blog_id']) {
-			$where[] = "blog_article.blog_id = ".$a['blog_id'];
+			if (is_array($a['blog_id'])) {
+				$where[] = "blog_article.blog_id in (".implode(',',$a['blog_id']).")";	
+			} else {
+				$where[] = "blog_article.blog_id = ".$a['blog_id'];
+			}
 		}
 		
 		// limit 
@@ -92,8 +101,16 @@ class blog_article extends model {
         if ($a['tag']) {
         	$from = 'blog_article_tag';
         	$first_join = 'LEFT JOIN blog_article on blog_article.id = blog_article_tag.blog_article_id and blog_article.active = 1';
-			$where[] = "blog_article_tag.name ilike '".$a['tag']."'";
-        } else {
+			if( is_array($a['tag']) ) {
+				unset($tag_temp);
+				foreach($a['tag'] as $blog_tag) {
+					$tag_temp .= "blog_article_tag.name ilike '".$blog_tag."' or ";
+				}
+				$where[] = '('.$tag_temp.' false)';
+			} else {
+				$where[] = "blog_article_tag.name ilike '".$a['tag']."'";
+			}
+		} else {
         	$tag_join = 'LEFT JOIN blog_article_tag on blog_article.id = blog_article_tag.blog_article_id and blog_article_tag.active = 1';
         }
 
@@ -108,6 +125,8 @@ class blog_article extends model {
 	        			{$first_join}
 	        			LEFT JOIN blog on blog.id = blog_article.blog_id and blog.active = 1
 	        			LEFT JOIN blog_category on blog_category.id = blog_article.blog_category_id and blog_category.active = 1
+	        			LEFT JOIN blog_media on blog_media.blog_article_id = blog_article.id and blog_media.active = 1
+
 	        			{$tag_join}
 	        			WHERE blog_article.active = 1 AND {$where}
 	        			{$group_by}
