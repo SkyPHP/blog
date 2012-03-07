@@ -30,9 +30,10 @@ class blog_mediabox extends mediabox {
 		$blog_vars['mediabox'] = true;
 		if (!$blog_vars['order_by'])
 			$blog_vars['order_by'] = 'blog_article.post_time desc';
-
+		if (!$blog_vars['limit'])
+			$blog_vars['limit'] = 5;
 		$article_ids = blog_article::getList($blog_vars);
-
+		
 		foreach($article_ids as $article_id) {
 			$blog = new blog_article($article_id);
 			$rs = aql::select('blog_media { media_item_id where blog_article_id = '.$blog->blog_article_id.'}');
