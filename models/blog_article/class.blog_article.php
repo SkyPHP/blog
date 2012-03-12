@@ -8,6 +8,7 @@ class blog_article extends model {
 
 	public $_ignore = array(
 		'tables' => array(
+			'market', 'blog', 'person', 'blog_category'
 		)
 	);
 	
@@ -136,7 +137,9 @@ class blog_article extends model {
 	        	) as fin ORDER BY row
 				{$offset}
 	        	{$limit}";
+       	elapsed('before blog_article::getList()');
         $r = sql($sql);
+        elapsed('after blog_article::getList()');
 		$ids = array();
 		while (!$r->EOF) {
 			$ids[] = $r->Fields('blog_article_id');
