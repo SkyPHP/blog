@@ -19,35 +19,62 @@ class blog_mediabox extends mediabox {
 			
 		*/
 		
-		$blog_vars = array();
-		$properties = self::getProperties();
-		foreach ($vars as $key => $var) {
-			if(!in_array($key, $properties)) {
-				$blog_vars[$key] = $var;
-				unset($vars[$key]); 
-			}
-		}
-		$blog_vars['mediabox'] = true;
-		if (!$blog_vars['order_by'])
-			$blog_vars['order_by'] = 'blog_article.post_time desc';
-		if (!$blog_vars['limit'])
-			$blog_vars['limit'] = 5;
+		$parsed = self::separateProperties($vars, array(
+			'mediabox' => true
+		));
+
+		$blog_vars = $parsed['other'];
+		$vars = $parsed['mediabox'];
+
+		$blog_vars['order_by'] = ($blog_vars['order_by']) ?: 'blog_article.post_time desc';
+		$blog_vars['limit'] = ($blog_vars['limit']) ?: 5;
+
 		$article_ids = blog_article::getList($blog_vars);
-		
-		foreach($article_ids as $article_id) {
-			$blog = new blog_article($article_id);
-			$rs = aql::select('blog_media { media_item_id where blog_article_id = '.$blog->blog_article_id.'}');
-			$data[] = array('media_item_id'=>$rs[0]['media_item_id'],
-							'tag' => $blog->blog_article_tag[0]['tag_name'],
-							'title' => $blog->title,
-							'subtitle' => $blog->introduction,
-							'href' => '/'.$blog->blog_slug.'/'.$blog->blog_article_id.'/'.slugize($blog->title)
-							);
+		$media = self::getMediaIDs($article_ids);
+
+		foreach ($article_ids as $id) {
+			$o = new blog_article($id);
+			$data[] = array(
+				'media_item_id' => $media[$o->getID()],
+				'tag' => $o->blog_article_tag[0]['tag_name'],
+				'title' => $o->title,
+				'subtitle' => $o->introduction,
+				'href' => sprintf(
+					'/%s/%s/%s', 
+					$o->blog_slug, 
+					$o->blog_article_id, 
+					slugize($o->title)
+				)
+			);
 		}
+
 		$vars['data'] = $data;
 
-		mediabox::render($vars);
+		return mediabox::render($vars);
+	}
+
+	// return an associative array of media_item_ids by blog_article_id
+	public static function getMediaIDs($ids = array()) {
 		
+		if (!$ids) return array();
+
+		if (!is_array($ids) || is_assoc($ids)) {
+			throw new Exception('blog_mediabox::getMediaIDs() expects an array parameter');
+		}
+
+		$ids_in = sprintf('blog_media.blog_article_id in (%s)', implode(',', $ids));
+		$aql = "blog_media { media_item_id, blog_article_id } ";
+		$rs = aql::select($aql, array(
+			'where' => $ids_in
+		));
+
+		$re = array();
+		foreach ($rs as $r) {
+			$re[$r['blog_article_id']] = $r['media_item_id'];
+		}
+
+		return $re;
+
 	}
 
 }
