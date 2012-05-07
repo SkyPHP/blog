@@ -1,6 +1,6 @@
 <?
 
-class blog_article extends model {
+class blog_article extends Model {
 
 	public $_required_fields = array(
 		
