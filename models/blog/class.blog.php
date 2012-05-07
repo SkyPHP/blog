@@ -1,5 +1,5 @@
 <?
-class blog extends model {
+class blog extends Model {
 
 
 }
