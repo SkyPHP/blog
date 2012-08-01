@@ -1,5 +1,6 @@
-<?
-class blog extends Model {
+<?php
 
+class blog extends Model
+{
 
 }
