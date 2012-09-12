@@ -1,28 +1,23 @@
-<?
-$sidebar = 'ad';
-
+<?php
+$this->sidebar = 'ad';
+$this->tab = 'blog';
 $r= new blog_article($blog_article_id);
 
-if ($p->queryfolders[0] != slugize($r->title)){  
-	if(IDE == $r->blog_slug)
+if ($this->queryfolders[0] != slugize($r->title)){  
+	if (IDE == $r->blog_slug)
 		redirect('/'.$r->blog_slug);
-	else
+	else {
 		redirect('/blog');
+	}
 }
 
+$this->js[]='http://maps.google.com/maps/api/js?sensor=false&language=en';
 
-
-$p->js[]='http://maps.google.com/maps/api/js?sensor=false&language=en';
-    
-
-$p->breadcrumb = array( 'Home' => '/',
+$this->breadcrumb = array( 'Home' => '/',
 						$r->blog_name => '/'.$r->blog_slug,
 						$r->title => NULL);
 
-$p->template('website', 'top');	
+$this->template('website', 'top');	
 include("article.php");
 
-$p->template('website', 'bottom');	
-
-
-?>
+$this->template('website', 'bottom');

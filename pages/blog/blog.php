@@ -11,10 +11,7 @@ if(!$blog_where)
 
 $clause['where'] = "( ".implode(' AND ',$blog_where)." )" ;
 
-$website['blog_json'] = $website;
-
-$p->css[] = '/pages/_blog.slug_/_blog.slug_.css';
+$this->css[] = '/pages/_blog.slug_/_blog.slug_.css';
 
 elapsed('before incl _blog.slug_.php');
-
 include('pages/_blog.slug_/_blog.slug_.php');
