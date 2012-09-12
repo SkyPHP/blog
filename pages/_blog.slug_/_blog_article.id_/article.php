@@ -34,7 +34,7 @@
 </div>
 
 <?
-include( 'video/video-player.php' );
+//include( 'video/video-player.php' );
 if($r['slideshow_vfolder']) {
 	?>
 	<style>
@@ -50,9 +50,9 @@ if($r['slideshow_vfolder']) {
 	<div class="blog-post-footer">
 		<input type="hidden" id="market_slug" value="<?=$market_slug?>" />
 		<?
-		$media_vfolder = media::get_vfolder($r['slideshow_vfolder']);
+		$media_vfolder = vf::getFolder($r['slideshow_vfolder']);
 		$album['media_vfolder_ide'] = $r['slideshow_vfolder'];
-		if (count($media_vfolder["items"])) {
+		if (count($media_vfolder->items)) {
 			define('PHOTO_AJAX','pages/_market.slug_/photos/ajax/');
 			define('PHOTO_INCLUDE','pages/_market.slug_/photos/includes/');
 			$photostrip_visible = 7;

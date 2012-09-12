@@ -9,7 +9,8 @@
         preg_match($pattern,$img,$matches2);
         $media_instance_ide = $matches2[1];
         if ( !is_numeric( decrypt($media_instance_ide,'media_instance') ) ) continue;
-        $aql = "media_item {
+        // NEW CAPTION CODE WILL NEED TO BE ADDED HERE
+        /*$aql = "media_item {
                     caption,
                     credits
                 }
@@ -17,7 +18,9 @@
                     where media_instance.ide = $media_instance_ide
                 }";
         $rs = aql::select($aql);
-        $rs = $rs[0];
+        $rs = $rs[0];*/
+
+
         if ( $rs['caption'] || $rs['credits'] ) {
             $replace = '<div class="article_image">'.str_replace('article_image','',$img);
             if ($rs['caption']) $replace .= '<div class="article_image_caption">'.$rs['caption'].'</div>';
