@@ -14,14 +14,19 @@ class blog_article extends Model {
 	
 	public static function getList($a) {		
 
-		//. market_id
 		//. where
+		//. scheduled
+		//. market_id
 		//. status
 		//. blog_category_id
-		//. limit
-		//. order_by
-		//. offset
+		//. mediabox
+		//. venue_id
 		//. search
+		//. person_id
+		//. blog_id
+		//. limit
+		//. offset
+		//. order_by
 		//. group_by
 		
 		// where
@@ -35,7 +40,12 @@ class blog_article extends Model {
 			$where = array();
 		}
 		$where[] = 'blog_article.id IS NOT NULL';
-		$where[] = 'blog_article.post_time < now()';
+
+
+		// has been scheduled to be posted at a time in the past
+		if ($a['scheduled']) {
+			$where[] = 'blog_article.post_time < now()';
+		}
 
 		// market_id
 		if ($a['market_id']) $where[] = "(blog_article.market_id = {$a['market_id']} OR blog_article.market_id = 0 OR blog_article.market_id IS NULL)";
@@ -80,10 +90,9 @@ class blog_article extends Model {
 		}
 		
 		// limit 
-        if ($a['limit']) 
+        if ($a['limit']) { 
 			$limit = 'LIMIT '.$a['limit'];
-		//else
-		//	$limit = 'LIMIT 10';
+		}
 
         // offset
         if ($a['offset']) $offset = 'OFFSET '.$a['offset'];
