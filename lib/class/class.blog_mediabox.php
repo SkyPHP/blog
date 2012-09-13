@@ -28,7 +28,8 @@ class blog_mediabox extends mediabox {
 
 		$blog_vars['order_by'] = ($blog_vars['order_by']) ?: 'blog_article.post_time desc';
 		$blog_vars['limit'] = ($blog_vars['limit']) ?: 5;
-
+		if($_GET['blog_vars'] == 1)
+			print_a($blog_vars);
 		$article_ids = blog_article::getList($blog_vars);
 		$media = self::getMediaIDs($article_ids);
 
