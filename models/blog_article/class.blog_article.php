@@ -135,7 +135,9 @@ class blog_article extends Model
                             and blog_article_tag.active = 1';
 
         }
-
+        if($_GET['get_list_where'] == 1)
+            print_a($where);
+        
         $where = ($where) ? implode(' and ', $where) : 'true';
 
         $sql = "SELECT blog_article_id FROM (
