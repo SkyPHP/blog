@@ -1,4 +1,7 @@
 <?php
+
+use \Crave\Model\blog_article;
+
 $this->sidebar = "ad";
 $this->tab = 'blog';
 $this->template('website', 'top');	
