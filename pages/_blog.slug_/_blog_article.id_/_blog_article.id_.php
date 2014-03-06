@@ -1,4 +1,6 @@
 <?php
+use \Crave\Model\blog_article;
+
 $this->sidebar = 'ad';
 $this->tab = 'blog';
 $r= new blog_article($blog_article_id);
