@@ -2,19 +2,19 @@
 	include('content.php');
 	$blog_editor = auth('blog_author:editor');
 	$admin = auth('admin:*');
-	$r['slideshow_vfolder'] = '/blog/blog_article/'.$r['blog_article_id'].'/slideshow';
+	$r->slideshow_vfolder = '/blog/blog_article/'.$r->blog_article_id.'/slideshow';
 ?>
 <div class="blog-post">
     <div class="blog-post-header">
-        <div class="blog-post-title"><?=$r['title']?></div>
-        <div class="blog-post-intro"><?=$r['introduction']?></div>
+        <div class="blog-post-title"><?=$r->title?></div>
+        <div class="blog-post-intro"><?=$r->introduction?></div>
         <div class="blog-post-info">
-            <?=date('l, F jS, Y \a\t g:i a',strtotime($r['post_time']))?>
-            | <?=($r['username']?"<a href='/{$r['username']}' >":"").ucwords(strtolower($r['fname']." ".$r['lname'])).($r['username']?"</a>":"")?>
+            <?=date('l, F jS, Y \a\t g:i a',strtotime($r->post_time))?>
+            | <?=($r->username?"<a href='/{$r->username}' >":"").ucwords(strtolower($r->fname." ".$r->lname)).($r->username?"</a>":"")?>
 <?
             if ( $blog_editor || auth('blog_author') ) {
 ?>
-                | <?=$r['pageviews']?> Page Views | <a href="/admin/blog/post/<?=$r['blog_article_ide']?>">Edit this article</a>
+                | <?=$r->pageviews?> Page Views | <a href="/admin/blog/post/<?=$r->blog_article_ide?>">Edit this article</a>
 <?
             }//if
 			if( $blog_editor || $admin ){
@@ -25,7 +25,7 @@
 ?>
         </div><? if(auth('developer')){ ?>
         <div class='blog_post_info'>
-           blog_article.id = <?=$r['blog_article_id']?> | blog_author.person_id = <?=$r['author__person_id']?> | blog.id = <?=$r['blog_id']?>
+           blog_article.id = <?=$r->blog_article_id?> | blog_author.person_id = <?=$r->author__person_id?> | blog.id = <?=$r->blog_id?>
         </div><?} ?>
     </div>
     <div id="blog-post-content" class="blog-post-content">
@@ -35,7 +35,7 @@
 
 <?
 //include( 'video/video-player.php' );
-if($r['slideshow_vfolder']) {
+if($r->slideshow_vfolder) {
 	?>
 	<style>
 	.skybox-close-button{
@@ -50,8 +50,8 @@ if($r['slideshow_vfolder']) {
 	<div class="blog-post-footer">
 		<input type="hidden" id="market_slug" value="<?=$market_slug?>" />
 		<?
-		$media_vfolder = vf::getFolder($r['slideshow_vfolder']);
-		$album['media_vfolder_ide'] = $r['slideshow_vfolder'];
+		$media_vfolder = vf::getFolder($r->slideshow_vfolder);
+		$album->media_vfolder_ide = $r->slideshow_vfolder;
 		if (count($media_vfolder->items)) {
 			define('PHOTO_AJAX','pages/_market.slug_/photos/ajax/');
 			define('PHOTO_INCLUDE','pages/_market.slug_/photos/includes/');
@@ -93,10 +93,10 @@ if($r['slideshow_vfolder']) {
     }//if map
 ?>
 
-    <div class="blog-post-footer-items <?=$r['venue_id']?'':'long'?>">
-       <? if($r['slideshow_vfolder'] && false){ ?>
+    <div class="blog-post-footer-items <?=$r->venue_id?'':'long'?>">
+       <? if($r->slideshow_vfolder && false){ ?>
              <div class='blog-post-slideshow blog-post-footer-item'>
-                <a href='javascript:skybox("/<?=$market_slug?>/<?=$blog_slug?>/slideshow",{vfolder:"<?=$r["slideshow_vfolder"]?>"});'>View Slide Show</a>
+                <a href='javascript:skybox("/<?=$market_slug?>/<?=$blog_slug?>/slideshow",{vfolder:"<?=$r->slideshow_vfolder?>"});'>View Slide Show</a>
              </div>
        <? } ?>
 
@@ -111,11 +111,11 @@ if ($GLOBALS['tiny_domain']) {
 }//if
 ?>
 
-        <div class="blog-post-tags blog-post-footer-item <?=$r['bylines']?"":"last"?>">
+        <div class="blog-post-tags blog-post-footer-item <?=$r->bylines?"":"last"?>">
     <?
             $aql = "blog_article_tag {
                         name
-                        where blog_article_tag.blog_article_id = {$r['blog_article_id']}
+                        where blog_article_tag.blog_article_id = {$r->blog_article_id}
                         order by blog_article_tag.iorder asc
                     }";
             $tags = aql::select($aql);
@@ -125,14 +125,14 @@ if ($GLOBALS['tiny_domain']) {
                 if ($first) echo 'Tags: ';
                 else echo ', ';
                 $first = false;
-                ?><a href="/blog-tag/<?=strtolower(str_replace(' ','+',$tag['name']))?>"><?=strtoupper($tag['name'])?></a><?
+                ?><a href="/blog-tag/<?=strtolower(str_replace(' ','+',$tag->name))?>"><?=strtoupper($tag->name)?></a><?
             }//foreach tags
     ?>
         </div>
 
-        <? if($r['bylines']){ ?>
+        <? if($r->bylines){ ?>
         <div class="blog-post-bylines">
-           <?=$r['bylines']?>
+           <?=$r->bylines?>
         </div>
         <? } ?>
     </div>
@@ -154,7 +154,7 @@ if ($GLOBALS['tiny_domain']) {
 
 <div id='under-blog-post'>
 
-    <? $disqus_identifier = $r['blog_article_ide'];
+    <? $disqus_identifier = $r->blog_article_ide;
 	//	echo $disqus_identifier;
       // include('disqus.php');
     ?>

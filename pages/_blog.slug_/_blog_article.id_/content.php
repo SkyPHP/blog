@@ -1,5 +1,6 @@
 <?
-    $content = $r['content'];
+
+    $content = $r->content;
     // add captions to photos
     $pattern = '/<img[^>]+\>/i';
     preg_match($pattern,$content,$matches);
